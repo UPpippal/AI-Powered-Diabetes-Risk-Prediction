@@ -1,21 +1,16 @@
+import streamlit as st
 import google.generativeai as genai
-from dotenv import load_dotenv
 import google.api_core.exceptions
-import os
-
-# Load .env
-load_dotenv()
 
 # Configure API
 genai.configure(
-    api_key=os.getenv("GOOGLE_API_KEY")
+    api_key=st.secrets["GEMINI_API_KEY"]
 )
 
 # Gemini model
 model = genai.GenerativeModel(
     "models/gemini-2.0-flash"
 )
-
 
 def get_health_advice(user_query):
 
@@ -53,4 +48,12 @@ def get_health_advice(user_query):
 ✅ Stay hydrated and sleep properly
 
 ⚠️ Please consult a doctor for medical advice.
+"""
+
+    except Exception:
+
+        return """
+⚠️ AI service temporarily unavailable.
+
+Please try again later.
 """
